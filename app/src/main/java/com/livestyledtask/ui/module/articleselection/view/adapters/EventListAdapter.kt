@@ -6,36 +6,54 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.livestyledtask.R
-
 import com.livestyledtask.datamodel.Event
 
-import java.util.ArrayList
+import com.livestyledtask.datamodel.Header
+import java.util.*
 
 /**
  * Created by ayoola on 30/09/2017.
  */
 
-class EventListAdapter(items: List<Event>, private val onItemClickListener: IOnItemClickListener) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
+class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val items = ArrayList<Event>()
+    private val VIEW_TYPE_HEADER = 0
+    private val VIEW_TYPE_ITEM = 1
+
+    private val items = ArrayList<Any>()
 
     init {
         this.items.addAll(items)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val event = getItemAt(position)
-        holder.articleTitle.text = event.name
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        if(holder.itemViewType == VIEW_TYPE_HEADER){
+            val viewHolder: HeaderViewHolder = holder as HeaderViewHolder
+            val header: Header = items[position] as Header
+            viewHolder.headerTextView.text = header.name
+        } else{
+            val viewHolder: EventViewHolder = holder as EventViewHolder
+            val event: Event = items[position] as Event
+            viewHolder.eventName.text = event.name
+        }
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        return ViewHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == VIEW_TYPE_HEADER) {
+             return HeaderViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_header, parent, false))
+        } else if (viewType == VIEW_TYPE_ITEM) {
+             return EventViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_layout, parent, false))
+        }
+        throw RuntimeException("Adapter " + viewType + "not found")
+
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        var articleTitle: TextView = itemView.findViewById(R.id.article_title)
+    inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        var eventName: TextView = itemView.findViewById(R.id.event_name)
 
         init {
             itemView.setOnClickListener(this)
@@ -47,9 +65,22 @@ class EventListAdapter(items: List<Event>, private val onItemClickListener: IOnI
         }
     }
 
-    fun getItemAt(position: Int): Event = items[position]
+    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        var headerTextView: TextView = itemView.findViewById(R.id.header)
+
+
+    }
+
+    fun getItemAt(position: Int): Any = items[position]
 
     override fun getItemCount(): Int = items.size
+
+    override fun getItemViewType(position: Int): Int {
+        return if (items[position] is Header)
+            VIEW_TYPE_HEADER
+        else
+            VIEW_TYPE_ITEM
+    }
 
     interface IOnItemClickListener {
         fun onItemClick(position: Int)

@@ -12,22 +12,20 @@ interface IEvents {
 
     interface ViewModel{
 
-        val eventListValue: BehaviorSubject<List<Event>>
+        val eventListValue: BehaviorSubject<List<Any>>
 
         var viewReference: WeakReference<View>
 
         fun loadEventsList()
 
-        fun addToFavourites(id: String)
-
-        fun removeFromFavourites(id: String)
+        fun eventIsFavourite(id: String)
 
         fun filterListByGenre(genre: String)
     }
 
     interface View {
 
-        fun updateRecyclerView(items: List<Event>)
+        fun updateRecyclerView(items: List<Any>)
 
         fun showError()
 

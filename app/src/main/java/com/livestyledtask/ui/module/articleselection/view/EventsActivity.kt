@@ -30,7 +30,7 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
 
     }
 
-    override fun updateRecyclerView(items: List<Event>) {
+    override fun updateRecyclerView(items: List<Any>) {
         adapter = EventListAdapter(items, this)
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.adapter = adapter
@@ -46,7 +46,11 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
     override fun showError() = SimpleDialog.show(this, getString(R.string.error_text), getString(R.string.error_message), true)
 
     override fun onItemClick(position: Int) {
-        //showArticleDialog(adapter.getItemAt(position).id)
+        val item = adapter.getItemAt(position)
+        if (item is Event){
+            viewModel.eventIsFavourite(item.id)
+        }
+
     }
 
     override fun isLoading(show: Boolean) {
