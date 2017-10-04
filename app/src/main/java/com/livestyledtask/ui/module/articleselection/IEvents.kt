@@ -16,7 +16,7 @@ interface IEvents {
 
         var viewReference: WeakReference<View>
 
-        fun loadEventsList(genre: String)
+        fun loadEventsList()
 
         fun eventIsFavourite(id: String)
     }
@@ -29,7 +29,6 @@ interface IEvents {
 
         fun isLoading(show: Boolean)
 
-        fun showSearchDialog()
     }
 
 }

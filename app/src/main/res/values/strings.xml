@@ -8,4 +8,7 @@
     <string name="search_dialog_hint">Search events by genre</string>
     <string name="search_text">Search</string>
     <string name="cancel_text">Cancel</string>
+    <string name="venue_label">Venue: </string>
+    <string name="date_label">Date: </string>
+    <string name="time_label">Time: </string>
 </resources>

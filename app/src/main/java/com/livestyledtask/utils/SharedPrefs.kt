@@ -20,6 +20,5 @@ class SharedPrefs(context: Context) {
             prefs.edit().clear().apply()
             prefs.edit().putStringSet(FAVOURITES, value).apply()
         }
-    //set(value) = prefs.edit().putStringSet(FAVOURITES, value).apply()
 
 }

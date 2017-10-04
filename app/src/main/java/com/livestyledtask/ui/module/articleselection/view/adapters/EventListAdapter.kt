@@ -4,11 +4,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.livestyledtask.R
 import com.livestyledtask.datamodel.Event
 
 import com.livestyledtask.datamodel.Header
+import com.livestyledtask.utils.ImageLoader
 import java.util.*
 
 /**
@@ -28,24 +31,29 @@ class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnIte
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if(holder.itemViewType == VIEW_TYPE_HEADER){
+        if (holder.itemViewType == VIEW_TYPE_HEADER) {
             val viewHolder: HeaderViewHolder = holder as HeaderViewHolder
             val header: Header = items[position] as Header
             viewHolder.headerTextView.text = header.name
-        } else{
+        } else {
             val viewHolder: EventViewHolder = holder as EventViewHolder
             val event: Event = items[position] as Event
             viewHolder.eventName.text = event.name
+            viewHolder.venueName.text = event.venueName
+            viewHolder.dateText.text = event.startDate
+            viewHolder.timeText.text = event.startTime
+            ImageLoader.load(viewHolder.eventImage,R.drawable.ic_placeholder ,event.imageUrl, viewHolder.itemView.context )
+
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == VIEW_TYPE_HEADER) {
-             return HeaderViewHolder(LayoutInflater.from(parent.context)
+            return HeaderViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_header, parent, false))
         } else if (viewType == VIEW_TYPE_ITEM) {
-             return EventViewHolder(LayoutInflater.from(parent.context)
+            return EventViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_layout, parent, false))
         }
         throw RuntimeException("Adapter " + viewType + "not found")
@@ -54,6 +62,11 @@ class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnIte
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var eventName: TextView = itemView.findViewById(R.id.event_name)
+        var venueName: TextView = itemView.findViewById(R.id.venue_text)
+        var dateText: TextView = itemView.findViewById(R.id.date_text)
+        var timeText: TextView = itemView.findViewById(R.id.time_text)
+        var eventImage: ImageView = itemView.findViewById(R.id.event_image)
+
 
         init {
             itemView.setOnClickListener(this)
@@ -65,7 +78,7 @@ class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnIte
         }
     }
 
-    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var headerTextView: TextView = itemView.findViewById(R.id.header)
 
 

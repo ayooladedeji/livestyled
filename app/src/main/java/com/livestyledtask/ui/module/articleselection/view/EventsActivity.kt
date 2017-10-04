@@ -27,7 +27,7 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.viewReference = WeakReference(this)
-        viewModel.loadEventsList("")
+        viewModel.loadEventsList()
         subscribeViews()
 
     }
@@ -39,8 +39,7 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
     }
 
     private fun subscribeViews() {
-        search_button.setOnClickListener { showSearchDialog() }
-        swipe_refresh.setOnRefreshListener { swipe_refresh.isRefreshing = false; viewModel.loadEventsList("") }
+        swipe_refresh.setOnRefreshListener { swipe_refresh.isRefreshing = false; viewModel.loadEventsList() }
         viewModel
                 .eventListValue
                 .subscribe { updateRecyclerView(it) }
@@ -54,19 +53,6 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
             viewModel.eventIsFavourite(item.id)
         }
 
-    }
-
-    override fun showSearchDialog() {
-        val searchDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        val searchBox = EditText(this)
-        searchBox.hint = getString(R.string.search_dialog_hint)
-        searchDialog.setView(searchBox)
-        searchDialog
-                .setPositiveButton(getString(R.string.search_text)) { dialog, _ ->
-                    viewModel.loadEventsList(searchBox.text.toString())
-                    dialog.dismiss() }
-        searchDialog.setNegativeButton(getString(R.string.cancel_text)) { dialog, _ -> dialog.dismiss() }
-        searchDialog.show()
     }
 
     override fun isLoading(show: Boolean) {

@@ -5,7 +5,6 @@ import com.livestyledtask.datamodel.Event
 /**
  * Created by ayoola on 03/10/2017.
  */
-
 data class DataResponse(val _embedded: Embedded)
 
 data class Embedded(val events: List<EventResponse>)

@@ -61,7 +61,9 @@ dependencies {
     compile 'android.arch.lifecycle:reactivestreams:1.0.0-alpha9'
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9"
 
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:26.0.1'
+    compile 'com.android.support:design:26.0.1'
 }
 repositories {
     mavenCentral()
