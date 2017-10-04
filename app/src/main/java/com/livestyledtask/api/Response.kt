@@ -44,7 +44,7 @@ private fun toEvent(eventResponse: EventResponse): Event =
                 eventResponse.name,
                 eventResponse._embedded.venues[0].name,
                 eventResponse.dates.start.localTime,eventResponse.dates.start.localDate,
-                eventResponse.images[6].url, eventResponse.classifications[0].genre.name)
+                eventResponse.images[6].url, eventResponse.classifications[0].genre.name.toLowerCase())
 
 
 fun errorResponse(): List<Event> = emptyList()

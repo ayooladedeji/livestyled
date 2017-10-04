@@ -16,6 +16,10 @@ class SharedPrefs(context: Context) {
 
     var favourites: MutableSet<String>
         get() = prefs.getStringSet(FAVOURITES, mutableSetOf())
-        set(value) = prefs.edit().putStringSet(FAVOURITES, value).apply()
+        set(value) {
+            prefs.edit().clear().apply()
+            prefs.edit().putStringSet(FAVOURITES, value).apply()
+        }
+    //set(value) = prefs.edit().putStringSet(FAVOURITES, value).apply()
 
 }

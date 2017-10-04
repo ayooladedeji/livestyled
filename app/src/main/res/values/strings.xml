@@ -5,4 +5,7 @@
     <string name="error_message">Problem with network, please try again later</string>
     <string name="dismiss_text">Dismiss</string>
     <string name="menu_refresh">refresh</string>
+    <string name="search_dialog_hint">Search events by genre</string>
+    <string name="search_text">Search</string>
+    <string name="cancel_text">Cancel</string>
 </resources>

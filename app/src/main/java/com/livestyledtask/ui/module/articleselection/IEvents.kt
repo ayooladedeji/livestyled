@@ -16,11 +16,9 @@ interface IEvents {
 
         var viewReference: WeakReference<View>
 
-        fun loadEventsList()
+        fun loadEventsList(genre: String)
 
         fun eventIsFavourite(id: String)
-
-        fun filterListByGenre(genre: String)
     }
 
     interface View {
@@ -29,9 +27,9 @@ interface IEvents {
 
         fun showError()
 
-        fun showNoResultsMessage()
-
         fun isLoading(show: Boolean)
+
+        fun showSearchDialog()
     }
 
 }

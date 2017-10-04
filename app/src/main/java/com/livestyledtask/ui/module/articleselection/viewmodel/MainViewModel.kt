@@ -10,7 +10,6 @@ import com.livestyledtask.datamodel.Event
 import com.livestyledtask.datamodel.Header
 import io.reactivex.subjects.BehaviorSubject
 import java.lang.ref.WeakReference
-import java.util.ArrayList
 
 /**
  * Created by ayoola on 29/09/2017.
@@ -18,18 +17,16 @@ import java.util.ArrayList
 
 class MainViewModel : ViewModel(), IEvents.ViewModel {
 
-
     private var eventRepository: EventRepository = EventRepositoryImpl()
     override val eventListValue: BehaviorSubject<List<Any>> = BehaviorSubject.create()
     override lateinit var viewReference: WeakReference<IEvents.View>
 
-
-    override fun loadEventsList() {
+    override fun loadEventsList(genre: String) {
         val view: IEvents.View? = viewReference.get()
         view?.isLoading(true)
         eventRepository
                 .getEventList()
-                .map { prepareData(it) }
+                .map { prepareData(it, genre) }
                 .doAfterSuccess { view?.isLoading(false) }
                 .subscribe { eventsList ->
                     when (eventsList) {
@@ -49,23 +46,36 @@ class MainViewModel : ViewModel(), IEvents.ViewModel {
         else
             favourites.add(id)
         App.sharedPrefs.favourites = favourites
-        loadEventsList()
+        loadEventsList("")
     }
 
-    override fun filterListByGenre(genre: String) {
-    }
 
-    private fun prepareData(eventList: List<Event>): List<Any> {
+    private fun prepareData(eventList: List<Event>, genre: String): List<Any> {
+        val listToShow: MutableList<Event> = eventList.toMutableList()
         val adapterInfo: MutableList<Any> = mutableListOf()
-        if (!App.sharedPrefs.favourites.isEmpty()) {
-            adapterInfo.add(Header("Favourites"))
-            eventList.filterTo(adapterInfo) { App.sharedPrefs.favourites.contains(it.id) }
-            adapterInfo.add(Header("Events"))
-            eventList.filterNotTo(adapterInfo) { App.sharedPrefs.favourites.contains(it.id) }
-        } else {
-            adapterInfo.add(Header("Events"))
-            adapterInfo.addAll(eventList)
+
+        if(genre != ""){
+            listToShow
+                    .filter { it.genre != genre }
+                    .forEach { listToShow.remove(it) }
+        }
+
+        if(listToShow.isEmpty()){
+            adapterInfo.add(Header("No Results"))
+        }else{
+            if (App.sharedPrefs.favourites.isEmpty() && listDoesNotContainFavourites(listToShow)) {
+                adapterInfo.add(Header("Events"))
+                adapterInfo.addAll(listToShow)
+            } else {
+                adapterInfo.add(Header("Favourites"))
+                listToShow.filterTo(adapterInfo) { App.sharedPrefs.favourites.contains(it.id) }
+                adapterInfo.add(Header("Events"))
+                listToShow.filterNotTo(adapterInfo) { App.sharedPrefs.favourites.contains(it.id) }
+            }
         }
         return adapterInfo
     }
+
+    private fun listDoesNotContainFavourites(list: List<Event>): Boolean = list.any { App.sharedPrefs.favourites.contains(it.id) }
+
 }
