@@ -1,15 +1,14 @@
-package com.livestyledtask.ui.module.articleselection.view
+package com.livestyledtask.ui.module.events.view
 
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import com.livestyledtask.*
-import com.livestyledtask.ui.module.articleselection.IEvents
+import com.livestyledtask.ui.module.events.IEvents
 import com.livestyledtask.datamodel.Event
-import com.livestyledtask.ui.module.articleselection.viewmodel.MainViewModel
-import com.livestyledtask.ui.module.articleselection.view.adapters.EventListAdapter
+import com.livestyledtask.ui.module.events.viewmodel.EventsViewModel
+import com.livestyledtask.ui.module.events.view.adapters.EventListAdapter
 import com.livestyledtask.ui.dialogs.SimpleDialog
 import kotlinx.android.synthetic.main.activity_events.*
 import android.view.View
@@ -24,7 +23,7 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel().newInstance(WeakReference(this))::class.java)
+        viewModel = ViewModelProviders.of(this).get(EventsViewModel().newInstance(WeakReference(this))::class.java)
         viewModel.loadEventsList()
         subscribeViews()
 

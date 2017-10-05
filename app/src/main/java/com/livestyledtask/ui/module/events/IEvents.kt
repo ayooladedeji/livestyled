@@ -1,9 +1,6 @@
-package com.livestyledtask.ui.module.articleselection
+package com.livestyledtask.ui.module.events
 
-import com.livestyledtask.datamodel.Event
-import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
-import java.lang.ref.WeakReference
 
 /**
  * Created by ayoola on 29/09/2017.

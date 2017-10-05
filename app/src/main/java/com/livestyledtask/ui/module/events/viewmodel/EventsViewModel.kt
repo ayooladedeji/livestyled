@@ -1,8 +1,8 @@
-package com.livestyledtask.ui.module.articleselection.viewmodel
+package com.livestyledtask.ui.module.events.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.livestyledtask.App
-import com.livestyledtask.ui.module.articleselection.IEvents
+import com.livestyledtask.ui.module.events.IEvents
 import com.livestyledtask.api.EventRepository
 import com.livestyledtask.api.EventRepositoryImpl
 import com.livestyledtask.api.ServiceGenerator
@@ -16,15 +16,15 @@ import java.lang.ref.WeakReference
  * Created by ayoola on 29/09/2017.
  */
 
-class MainViewModel : ViewModel(), IEvents.ViewModel {
+class EventsViewModel : ViewModel(), IEvents.ViewModel {
 
     private val subscriptions: CompositeDisposable = CompositeDisposable()
     private var eventRepository: EventRepository = EventRepositoryImpl(ServiceGenerator.dataService)
     override val eventListValue: BehaviorSubject<List<Any>> = BehaviorSubject.create()
     override var view: IEvents.View? = null
 
-    fun newInstance(view: WeakReference<IEvents.View>?): MainViewModel {
-        val viewModel = MainViewModel()
+    fun newInstance(view: WeakReference<IEvents.View>?): EventsViewModel {
+        val viewModel = EventsViewModel()
         viewModel.view = view?.get()
         return viewModel
     }
