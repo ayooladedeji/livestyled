@@ -10,8 +10,6 @@ import com.livestyledtask.R
 
 object SimpleDialog {
 
-    private lateinit var dialog: AlertDialog
-
     fun show(context: Context, title: String?, message: String?, cancelable: Boolean) {
         val builder = AlertDialog.Builder(context)
 
@@ -22,9 +20,10 @@ object SimpleDialog {
             builder.setTitle(title)
 
         builder.setCancelable(cancelable)
-        builder.setPositiveButton(context.getString(R.string.ok_text)) { dialog, _ -> dialog.cancel() }
+        builder.setPositiveButton(context.getString(R.string.ok_text)) { dialog, _ -> dialog.dismiss() }
 
-        dialog = builder.create()
+        val dialog = builder.create()
         dialog.show()
     }
+
 }

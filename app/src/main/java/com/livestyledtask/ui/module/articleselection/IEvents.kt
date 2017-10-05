@@ -14,11 +14,13 @@ interface IEvents {
 
         val eventListValue: BehaviorSubject<List<Any>>
 
-        var viewReference: WeakReference<View>
+        val view: IEvents.View?
 
         fun loadEventsList()
 
         fun eventIsFavourite(id: String)
+
+        fun onDestroy()
     }
 
     interface View {
@@ -27,7 +29,7 @@ interface IEvents {
 
         fun showError()
 
-        fun isLoading(show: Boolean)
+        fun showLoading(show: Boolean)
 
     }
 

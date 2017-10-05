@@ -11,13 +11,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 internal object ServiceGenerator {
 
-    private val dataRetrofit: Retrofit
-        get() = getBaseRetrofit(BuildConfig.URL_TICKETMASTER)
+    private val dataRetrofit: Retrofit by lazy {
+        getBaseRetrofit(BuildConfig.URL_TICKETMASTER)
                 .build()
+    }
 
-    val dataService: DataService
-        get() = dataRetrofit
-                .create(DataService::class.java)
+    val dataService: EventsService by lazy {
+        dataRetrofit.create(EventsService::class.java)
+    }
 
     private fun getBaseRetrofit(baseUrl: String): Retrofit.Builder {
         return Retrofit.Builder()

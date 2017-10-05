@@ -36,9 +36,9 @@ data class Image(
 		val width: Int,
 		val height: Int)
 
-fun toEventList(dataResponse: DataResponse): List<Event> = dataResponse._embedded.events.mapTo(mutableListOf()){ toEvent(it)}
+fun getEventList(dataResponse: DataResponse): List<Event> = dataResponse._embedded.events.mapTo(mutableListOf()){ mapResponseToEvent(it)}
 
-private fun toEvent(eventResponse: EventResponse): Event =
+private fun mapResponseToEvent(eventResponse: EventResponse): Event =
         Event(eventResponse.id,
                 eventResponse.name,
                 eventResponse._embedded.venues[0].name,

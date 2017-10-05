@@ -13,7 +13,6 @@ import com.livestyledtask.ui.module.articleselection.view.adapters.EventListAdap
 import com.livestyledtask.ui.dialogs.SimpleDialog
 import kotlinx.android.synthetic.main.activity_events.*
 import android.view.View
-import android.widget.EditText
 import java.lang.ref.WeakReference
 
 class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnItemClickListener {
@@ -25,8 +24,7 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        viewModel.viewReference = WeakReference(this)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel().newInstance(WeakReference(this))::class.java)
         viewModel.loadEventsList()
         subscribeViews()
 
@@ -55,8 +53,13 @@ class EventsActivity : AppCompatActivity(), IEvents.View, EventListAdapter.IOnIt
 
     }
 
-    override fun isLoading(show: Boolean) {
+    override fun showLoading(show: Boolean) {
         progress_bar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun onDestroy() {
+        viewModel.onDestroy()
+        super.onDestroy()
     }
 
 }

@@ -18,16 +18,10 @@ import java.util.*
  * Created by ayoola on 30/09/2017.
  */
 
-class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EventListAdapter(private val items: List<Any>, private val onItemClickListener: IOnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_HEADER = 0
     private val VIEW_TYPE_ITEM = 1
-
-    private val items = ArrayList<Any>()
-
-    init {
-        this.items.addAll(items)
-    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
@@ -43,9 +37,7 @@ class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnIte
             viewHolder.dateText.text = event.startDate
             viewHolder.timeText.text = event.startTime
             ImageLoader.load(viewHolder.eventImage,R.drawable.ic_placeholder ,event.imageUrl, viewHolder.itemView.context )
-
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -74,7 +66,7 @@ class EventListAdapter(items: List<Any>, private val onItemClickListener: IOnIte
         }
 
         override fun onClick(view: View) {
-            onItemClickListener.onItemClick(this.layoutPosition)
+            onItemClickListener.onItemClick(this.adapterPosition)
         }
     }
 
